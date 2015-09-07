@@ -1,5 +1,6 @@
 package by.ansgar.nodes.scene;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.List;
@@ -28,31 +29,40 @@ public class Scene extends JPanel implements Runnable {
 	private boolean startProgramm;
 
 	private Background background;
-	private List<Cells> cells = new ArrayList<Cells>();
+	public static List<Cells> cells = new ArrayList<Cells>();
 
 	public Scene() {
 		startProgramm = true;
 		background = new Background();
-		cells.add(new Cells());
+		cells.add(new Cells(50, 50, Color.GREEN));
+		cells.add(new Cells(150, 150, Color.RED));
+		cells.add(new Cells(250, 150, Color.BLACK));
+
+		addMouseListener(new MouseInput());
+		addMouseMotionListener(new MouseInput());
 
 	}
 
 	public void update() {
 
-		for (int i = 0; i < cells.size(); i++) {
+		for (Cells allCells : cells) {
 
-			if (MouseInput.MouseX <= (cells.get(i).getX() + Cells.RADIUS)
-					&& MouseInput.MouseX >= cells.get(i).getX()
-					&& MouseInput.MouseY <= (cells.get(i).getY() + Cells.RADIUS)
-					&& MouseInput.MouseY >= cells.get(i).getY()) {
+			if (MouseInput.mousePressed
+					&& MouseInput.mouseX <= (allCells.getX() + Cells.RADIUS)
+					&& MouseInput.mouseX >= allCells.getX()
+					&& MouseInput.mouseY <= (allCells.getY() + Cells.RADIUS)
+					&& MouseInput.mouseY >= allCells.getY()
+					&& !allCells.select) {
 
-				if (MouseInput.mousePressed) {
-					cells.get(i).setX(MouseInput.MouseDX);
-					cells.get(i).setY(MouseInput.MouseDY);
-					cells.get(i).update();
-				}
+				allCells.select = true;
 			}
-
+			if (allCells.select) {
+				// allCells.update(MouseInput.mouseDX, MouseInput.mouseDY);
+				allCells.setX(MouseInput.mouseDX);
+				allCells.setY(MouseInput.mouseDY);
+				// cells.get(i).select = false;
+			}
+			allCells.update();
 		}
 
 	}
@@ -91,7 +101,6 @@ public class Scene extends JPanel implements Runnable {
 			update();
 			render();
 			draw();
-
 			try {
 				thread.sleep(60);
 			} catch (InterruptedException e) {
