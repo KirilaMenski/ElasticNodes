@@ -3,6 +3,8 @@ package by.ansgar.nodes.entity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import by.ansgar.nodes.scene.Scene;
+
 public class Cells {
 
 	private double x;
@@ -10,26 +12,32 @@ public class Cells {
 	private double speed;
 	private double dx;
 	private double dy;
+	private Color color;
 	public static final int RADIUS= 50;
-
-	public Cells() {
-		x = 50;
-		y = 50;
+	
+	public boolean select = false;
+	
+	public Cells(){
 		
-		dx = 0;
-		dy = 0;
+	}
 
-		speed = 1;
+	public Cells(int x, int y, Color color) {
+		this.x = x;
+		this.y = y;
+		this.color = color;
 
 	}
 
 	public void update() {
-		x += dx;
-		y += dy;
+		
+		if((x + RADIUS) >= Scene.WIDTH) x = Scene.WIDTH - RADIUS;
+		if(x <= 0) x = 0;
+		if(y + RADIUS >= Scene.HEIGHT) y = Scene.HEIGHT - RADIUS;
+		if(y <= 0) y = 0;
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(Color.green);
+		g.setColor(color);
 		g.fillOval((int)x, (int)y, RADIUS, RADIUS);
 	}
 
