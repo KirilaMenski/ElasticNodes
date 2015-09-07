@@ -3,6 +3,8 @@ package by.ansgar.nodes.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import by.ansgar.nodes.entity.Cells;
+
 public class KeyInput implements KeyListener {
 
 	@Override
