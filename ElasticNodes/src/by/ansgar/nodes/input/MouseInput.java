@@ -3,26 +3,33 @@ package by.ansgar.nodes.input;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import by.ansgar.nodes.entity.Cells;
+import by.ansgar.nodes.scene.Scene;
 
 public class MouseInput implements MouseListener, MouseMotionListener{
 
-	public static int MouseX;
-	public static int MouseY;
-	public static int MouseDX;
-	public static int MouseDY;
-	public static boolean mousePressed;
+	public static int mouseX;
+	public static int mouseY;
+	public static int mouseDX;
+	public static int mouseDY;
+	public static boolean mousePressed = false;
 	
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		
+		mouseDX = e.getX();
+		mouseDY = e.getY();
+//		System.out.println("MouseDX = " + mouseDX + " | MouseDY = " + mouseDY);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		MouseDX = e.getX();
-		MouseDY = e.getY();
-		System.out.println("MouseDX = " + MouseDX + " | MouseDY = " + MouseDY);
+//		mouseX = e.getX();
+//		mouseY = e.getY();
+//		System.out.println("MouseDX = " + mouseDX + " | MouseDY = " + mouseDY);
 	}
 
 	@Override
@@ -45,18 +52,19 @@ public class MouseInput implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		MouseX = e.getX();
-		MouseY = e.getY();
+		mouseX = e.getX();
+		mouseY = e.getY();
 		mousePressed = true;
-		
-		System.out.println(MouseX +"||" + MouseY);
 		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		mousePressed = true;
+	public void mouseReleased(MouseEvent e) {
+		mousePressed = false;
 		
+		for(Cells allCells : Scene.cells){
+			allCells.select = false;
+		}
 	}
 
 }
