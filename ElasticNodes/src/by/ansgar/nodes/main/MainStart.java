@@ -25,8 +25,8 @@ public class MainStart {
 		frame.setResizable(false);
 		frame.add(scene);
 		frame.addKeyListener(new KeyInput());
-		frame.addMouseListener(new MouseInput());
-		frame.addMouseMotionListener(new MouseInput());
+//		frame.addMouseListener(new MouseInput());
+//		frame.addMouseMotionListener(new MouseInput());
 		scene.start();
 		
 		
