@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import by.ansgar.nodes.entity.Background;
 import by.ansgar.nodes.entity.Cells;
+import by.ansgar.nodes.entity.Nodes;
 import by.ansgar.nodes.input.KeyInput;
 import by.ansgar.nodes.input.MouseInput;
 
@@ -30,13 +31,16 @@ public class Scene extends JPanel implements Runnable {
 
 	private Background background;
 	public static List<Cells> cells = new ArrayList<Cells>();
+	public static List<Nodes> nodes = new ArrayList<Nodes>();
 
 	public Scene() {
 		startProgramm = true;
 		background = new Background();
 		cells.add(new Cells(50, 50, Color.GREEN));
 		cells.add(new Cells(150, 150, Color.RED));
-		cells.add(new Cells(250, 150, Color.BLACK));
+
+		// nodes.add(new Nodes(10, 10, 400, 400, Color.BLACK));
+		// nodes.add(new Nodes(400, 10, 10, 400, Color.RED));
 
 		addMouseListener(new MouseInput());
 		addMouseMotionListener(new MouseInput());
@@ -45,24 +49,34 @@ public class Scene extends JPanel implements Runnable {
 
 	public void update() {
 
-		for (Cells allCells : cells) {
+		for (int i = 0; i < cells.size(); i++) {
 
 			if (MouseInput.mousePressed
-					&& MouseInput.mouseX <= (allCells.getX() + Cells.RADIUS)
-					&& MouseInput.mouseX >= allCells.getX()
-					&& MouseInput.mouseY <= (allCells.getY() + Cells.RADIUS)
-					&& MouseInput.mouseY >= allCells.getY()
-					&& !allCells.select) {
+					&& MouseInput.mouseX <= (cells.get(i).getX() + Cells.RADIUS)
+					&& MouseInput.mouseX >= cells.get(i).getX()
+					&& MouseInput.mouseY <= (cells.get(i).getY() + Cells.RADIUS)
+					&& MouseInput.mouseY >= cells.get(i).getY()
+					&& !cells.get(i).select) {
 
-				allCells.select = true;
+				cells.get(i).select = true;
 			}
-			if (allCells.select) {
-				// allCells.update(MouseInput.mouseDX, MouseInput.mouseDY);
-				allCells.setX(MouseInput.mouseDX);
-				allCells.setY(MouseInput.mouseDY);
-				// cells.get(i).select = false;
+			if (cells.get(i).select) {
+				cells.get(i).setX(MouseInput.mouseDX);
+				cells.get(i).setY(MouseInput.mouseDY);
+
 			}
-			allCells.update();
+			for (int j = 0; j < nodes.size(); j++) {
+				nodes.get(j).setX1((int) cells.get(0).getX() + 25);
+				nodes.get(j).setY1((int) cells.get(0).getY() + 25);
+				nodes.get(j).setX2((int) cells.get(1).getX() + 25);
+				nodes.get(j).setY2((int) cells.get(1).getY() + 25);
+			}
+			// collision
+			if (cells.get(0).intersect(cells.get(1))) {
+				cells.get(i).moving(1, 1);
+			}
+
+			cells.get(i).update();
 		}
 
 	}
@@ -73,8 +87,23 @@ public class Scene extends JPanel implements Runnable {
 
 		// draw cells
 		for (int i = 0; i < cells.size(); i++) {
-			cells.get(i).draw(g);
+
+			if (cells.size() > 1) {
+
+				for (int j = 1; j < cells.size(); j++) {
+					nodes.add(new Nodes((int) cells.get(0).getX() + 25,
+							(int) cells.get(0).getY() + 25, (int) cells.get(1)
+									.getX() + 25,
+							(int) cells.get(1).getY() + 25, Color.black));
+
+					nodes.get(i).draw(g);
+
+				}
+				cells.get(i).draw(g);
+			}
+
 		}
+
 	}
 
 	public void draw() {
@@ -102,7 +131,7 @@ public class Scene extends JPanel implements Runnable {
 			render();
 			draw();
 			try {
-				thread.sleep(60);
+				thread.sleep(30);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
