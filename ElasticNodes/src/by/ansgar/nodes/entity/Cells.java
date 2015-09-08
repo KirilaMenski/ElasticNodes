@@ -2,6 +2,7 @@ package by.ansgar.nodes.entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import by.ansgar.nodes.scene.Scene;
 
@@ -13,12 +14,13 @@ public class Cells {
 	private double dx;
 	private double dy;
 	private Color color;
-	public static final int RADIUS= 50;
-	
+	private Rectangle size = new Rectangle();
+	public static final int RADIUS = 50;
+
 	public boolean select = false;
-	
-	public Cells(){
-		
+
+	public Cells() {
+
 	}
 
 	public Cells(int x, int y, Color color) {
@@ -28,17 +30,31 @@ public class Cells {
 
 	}
 
+	public boolean intersect(Cells cells){
+		size.setBounds((int)x, (int)y, RADIUS, RADIUS);
+		return size.intersects(getX(), getY(), RADIUS, RADIUS);
+	}
+
 	public void update() {
-		
-		if((x + RADIUS) >= Scene.WIDTH) x = Scene.WIDTH - RADIUS;
-		if(x <= 0) x = 0;
-		if(y + RADIUS >= Scene.HEIGHT) y = Scene.HEIGHT - RADIUS;
-		if(y <= 0) y = 0;
+
+		if ((x + RADIUS) >= Scene.WIDTH)
+			x = Scene.WIDTH - RADIUS;
+		if (x <= 0)
+			x = 0;
+		if (y + RADIUS >= Scene.HEIGHT)
+			y = Scene.HEIGHT - RADIUS;
+		if (y <= 0)
+			y = 0;
+	}
+	
+	public void moving(int dx, int dy){
+		x += dx;
+		y += dy;
 	}
 
 	public void draw(Graphics2D g) {
 		g.setColor(color);
-		g.fillOval((int)x, (int)y, RADIUS, RADIUS);
+		g.fillOval((int) x, (int) y, RADIUS, RADIUS);
 	}
 
 	public double getX() {
@@ -80,7 +96,5 @@ public class Cells {
 	public void setDy(double dy) {
 		this.dy = dy;
 	}
-	
-	
 
 }
