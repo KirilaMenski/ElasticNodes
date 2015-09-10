@@ -11,8 +11,6 @@ public class Cells {
 	private double x;
 	private double y;
 	private double speed;
-	private double dx;
-	private double dy;
 	private Color color;
 	private Rectangle size = new Rectangle();
 	public static final int RADIUS = 50;
@@ -31,8 +29,8 @@ public class Cells {
 	}
 
 	public boolean intersect(Cells cells){
-		size.setBounds((int)x, (int)y, RADIUS, RADIUS);
-		return size.intersects(getX(), getY(), RADIUS, RADIUS);
+		size.setBounds((int) x, (int) y, RADIUS, RADIUS);
+		return size.intersects((int) x, (int) y, RADIUS, RADIUS);
 	}
 
 	public void update() {
@@ -79,22 +77,6 @@ public class Cells {
 
 	public void setSpeed(double speed) {
 		this.speed = speed;
-	}
-
-	public double getDx() {
-		return dx;
-	}
-
-	public void setDx(double dx) {
-		this.dx = dx;
-	}
-
-	public double getDy() {
-		return dy;
-	}
-
-	public void setDy(double dy) {
-		this.dy = dy;
 	}
 
 }
