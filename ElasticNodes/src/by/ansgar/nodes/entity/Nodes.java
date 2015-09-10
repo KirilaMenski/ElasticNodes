@@ -3,6 +3,7 @@ package by.ansgar.nodes.entity;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import by.ansgar.nodes.input.MouseInput;
 import by.ansgar.nodes.scene.Scene;
 
 public class Nodes {
@@ -12,9 +13,9 @@ public class Nodes {
 	private int y1;
 	private int y2;
 	public static int d;
-	public final int TENSION_MIN = 50;
-	public final int TENSION_NOR = 150;
-	public final int TENSION_MAX = 250;
+	public final int LENGTH_MIN = 50;
+	public final int LENGTH_NOR = 150;
+	public final int LENGTH_MAX = 250;
 	private Color color;
 
 	public Nodes() {
@@ -32,29 +33,48 @@ public class Nodes {
 	public boolean calcDist() {
 		d = (int) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
-		if (d >= TENSION_MAX) {
+		if (d >= LENGTH_MAX) {
 			return true;
 		} else
 			return false;
 	}
 
-	public void tention() {
+	public void update() {
+		tention();
+		compression();
+	}
 
-		if (x1 < x2 && d != TENSION_MIN) {
+	private void tention() {
+
+		if (x1 < x2 && d != LENGTH_MIN) {
 			Scene.cells.get(0).moving(1, 0);
 		}
-		if (x1 > x2 && d != TENSION_MIN) {
+		if (x1 > x2 && d != LENGTH_MIN) {
 			Scene.cells.get(0).moving(-1, 0);
 		}
-		if (y1 < y2 && d != TENSION_MIN) {
+		if (y1 < y2 && d != LENGTH_MIN) {
 			Scene.cells.get(0).moving(0, 1);
 		}
-		if (y1 > y2 && d != TENSION_MIN) {
+		if (y1 > y2 && d != LENGTH_MIN) {
 			Scene.cells.get(0).moving(0, -1);
 		}
 	}
 
-	public void update() {
+	private void compression() {
+		// while (d > LENGTH_NOR && !MouseInput.mousePressed) {
+		if (x1 < x2) {
+			Scene.cells.get(1).moving(-1, 0);
+		}
+		if (x1 > x2) {
+			Scene.cells.get(1).moving(1, 0);
+		}
+		if (y1 < y2) {
+			Scene.cells.get(1).moving(0, -1);
+		}
+		if (y1 > y2) {
+			Scene.cells.get(1).moving(0, 1);
+			// }
+		}
 	}
 
 	public void draw(Graphics2D g) {
