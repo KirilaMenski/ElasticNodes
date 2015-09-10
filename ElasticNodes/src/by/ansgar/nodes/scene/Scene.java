@@ -67,10 +67,12 @@ public class Scene extends JPanel implements Runnable {
 				nodes.get(j).setY1((int) cells.get(0).getY() + 25);
 				nodes.get(j).setX2((int) cells.get(1).getX() + 25);
 				nodes.get(j).setY2((int) cells.get(1).getY() + 25);
-//				System.out.println("d = " + nodes.get(j).d + " "
-//						+ nodes.get(j).calcDist());
-				if(nodes.get(j).calcDist()) nodes.get(j).tention();
-				
+				// System.out.println("d = " + nodes.get(j).d + " "
+				// + nodes.get(j).calcDist());
+				if (nodes.get(j).calcDist()) {
+					nodes.get(j).update();
+				}
+
 			}
 			// collision
 			// if (cells.get(0).intersect(cells.get(1))) {
@@ -85,24 +87,23 @@ public class Scene extends JPanel implements Runnable {
 	public void render() {
 		// draw background
 		background.draw(g);
+		
+		//draw nodes
+		if (cells.size() > 1) {
 
+			for (int j = 0; j < cells.size(); j++) {
+				nodes.add(new Nodes((int) cells.get(0).getX() + 25, (int) cells
+						.get(0).getY() + 25, (int) cells.get(1).getX() + 25,
+						(int) cells.get(1).getY() + 25, Color.black));
+				
+				nodes.get(j).draw(g);
+			}
+		}
+		
 		// draw cells
 		for (int i = 0; i < cells.size(); i++) {
 
-			if (cells.size() > 1) {
-
-				for (int j = 1; j < cells.size(); j++) {
-					nodes.add(new Nodes((int) cells.get(0).getX() + 25,
-							(int) cells.get(0).getY() + 25, (int) cells.get(1)
-									.getX() + 25,
-							(int) cells.get(1).getY() + 25, Color.black));
-
-					nodes.get(i).draw(g);
-
-				}
-				cells.get(i).draw(g);
-			}
-
+			cells.get(i).draw(g);
 		}
 
 	}
