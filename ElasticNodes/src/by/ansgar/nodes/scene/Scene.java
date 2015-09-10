@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import by.ansgar.nodes.entity.Background;
 import by.ansgar.nodes.entity.Cells;
 import by.ansgar.nodes.entity.Nodes;
-import by.ansgar.nodes.input.KeyInput;
 import by.ansgar.nodes.input.MouseInput;
 
 public class Scene extends JPanel implements Runnable {
@@ -39,9 +38,6 @@ public class Scene extends JPanel implements Runnable {
 		cells.add(new Cells(50, 50, Color.GREEN));
 		cells.add(new Cells(150, 150, Color.RED));
 
-		// nodes.add(new Nodes(10, 10, 400, 400, Color.BLACK));
-		// nodes.add(new Nodes(400, 10, 10, 400, Color.RED));
-
 		addMouseListener(new MouseInput());
 		addMouseMotionListener(new MouseInput());
 
@@ -65,16 +61,21 @@ public class Scene extends JPanel implements Runnable {
 				cells.get(i).setY(MouseInput.mouseDY);
 
 			}
+
 			for (int j = 0; j < nodes.size(); j++) {
 				nodes.get(j).setX1((int) cells.get(0).getX() + 25);
 				nodes.get(j).setY1((int) cells.get(0).getY() + 25);
 				nodes.get(j).setX2((int) cells.get(1).getX() + 25);
 				nodes.get(j).setY2((int) cells.get(1).getY() + 25);
+//				System.out.println("d = " + nodes.get(j).d + " "
+//						+ nodes.get(j).calcDist());
+				if(nodes.get(j).calcDist()) nodes.get(j).tention();
+				
 			}
 			// collision
-			if (cells.get(0).intersect(cells.get(1))) {
-				cells.get(i).moving(1, 1);
-			}
+			// if (cells.get(0).intersect(cells.get(1))) {
+			// cells.get(i).moving(1, 1);
+			// }
 
 			cells.get(i).update();
 		}
