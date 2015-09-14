@@ -19,7 +19,6 @@ public class Scene extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String title = "Elastic Nodes";
 	public static final int WIDTH = 700;
 	public static final int HEIGHT = 600;
 
@@ -35,8 +34,15 @@ public class Scene extends JPanel implements Runnable {
 	public Scene() {
 		startProgramm = true;
 		background = new Background();
-		cells.add(new Cells(50, 50, Color.GREEN));
-		cells.add(new Cells(150, 150, Color.RED));
+		cells.add(new Cells(50, 50, 50, 50, Color.GREEN));
+		cells.add(new Cells(150, 50, 150, 50, Color.RED));
+//		 cells.add(new Cells(450, 50, 450, 50, Color.black));
+		nodes.add(new Nodes((int) cells.get(0).getX() + 25, (int) cells.get(0)
+				.getY() + 25, (int) cells.get(1).getX() + 25, (int) cells
+				.get(1).getY() + 25, Color.black));
+//		nodes.add(new Nodes((int) cells.get(1).getX() + 25, (int) cells.get(1)
+//				.getY() + 25, (int) cells.get(2).getX() + 25, (int) cells
+//				.get(2).getY() + 25, Color.black));
 
 		addMouseListener(new MouseInput());
 		addMouseMotionListener(new MouseInput());
@@ -67,17 +73,18 @@ public class Scene extends JPanel implements Runnable {
 				nodes.get(j).setY1((int) cells.get(0).getY() + 25);
 				nodes.get(j).setX2((int) cells.get(1).getX() + 25);
 				nodes.get(j).setY2((int) cells.get(1).getY() + 25);
-				// System.out.println("d = " + nodes.get(j).d + " "
-				// + nodes.get(j).calcDist());
+
+				System.out.println(nodes.size());
+				System.out.println(cells.size());
 				if (nodes.get(j).calcDist()) {
 					nodes.get(j).update();
 				}
 
 			}
-			// collision
-			// if (cells.get(0).intersect(cells.get(1))) {
-			// cells.get(i).moving(1, 1);
-			// }
+//			 collision
+//			 if (cells.get(0).intersect(cells.get(1))) {
+//			 cells.get(i).moving(1, 1);
+//			 }
 
 			cells.get(i).update();
 		}
@@ -87,22 +94,14 @@ public class Scene extends JPanel implements Runnable {
 	public void render() {
 		// draw background
 		background.draw(g);
-		
-		//draw nodes
-		if (cells.size() > 1) {
 
-			for (int j = 0; j < cells.size(); j++) {
-				nodes.add(new Nodes((int) cells.get(0).getX() + 25, (int) cells
-						.get(0).getY() + 25, (int) cells.get(1).getX() + 25,
-						(int) cells.get(1).getY() + 25, Color.black));
-				
-				nodes.get(j).draw(g);
-			}
+		// draw nodes
+		for (int j = 0; j < nodes.size(); j++) {
+			nodes.get(j).draw(g);
 		}
-		
+
 		// draw cells
 		for (int i = 0; i < cells.size(); i++) {
-
 			cells.get(i).draw(g);
 		}
 
@@ -132,6 +131,7 @@ public class Scene extends JPanel implements Runnable {
 			update();
 			render();
 			draw();
+
 			try {
 				thread.sleep(30);
 			} catch (InterruptedException e) {
